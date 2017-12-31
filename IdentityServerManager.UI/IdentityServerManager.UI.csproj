@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="IdentityServer4" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\fonts\themify.eot" />
+    <None Include="wwwroot\css\fonts\themify.svg" />
+    <None Include="wwwroot\css\fonts\themify.ttf" />
+    <None Include="wwwroot\css\fonts\themify.woff" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\dist\" />
+    <Folder Include="wwwroot\img\background\" />
+    <Folder Include="wwwroot\img\tables\" />
+    <Folder Include="wwwroot\js\dist\" />
+  </ItemGroup>
+
+</Project>

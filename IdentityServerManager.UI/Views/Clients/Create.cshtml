@@ -1,0 +1,19 @@
+﻿@model IdentityServerManager.UI.Models.ClientViewModel
+
+@{
+    ViewData["Title"] = "Create Client";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+
+            @Html.Partial("_formFields", Model)
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

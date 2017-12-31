@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewData["Title"] - IdentityServerManager.UI</title>
+
+    <environment include="Development">
+        <link href="~/css/dist/styles.vendor.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/dist/styles.vendor.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+
+</head>
+<body>
+
+    <div class="wrapper">
+
+        @Html.Partial("_Navigation")
+
+        <div class="main-panel">
+
+            @Html.Partial("_TopNavbar")
+
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+
+            @Html.Partial("_Footer")
+
+        </div>
+
+    </div>
+
+    @Html.Hidden("SuccessMessage", (ViewData["SuccessMessage"] != null ? ViewData["SuccessMessage"].ToString() : ""))
+
+    <environment include="Development">
+        <script src="~/js/dist/scripts.vendor.js" asp-append-version="true"></script>
+        <script src="~/js/dist/scripts.app.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/dist/scripts.vendor.min.js" asp-append-version="true"></script>
+        <script src="~/js/dist/scripts.app.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

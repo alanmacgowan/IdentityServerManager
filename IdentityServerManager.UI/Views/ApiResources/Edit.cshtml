@@ -1,0 +1,20 @@
+﻿@model IdentityServerManager.UI.Models.ApiResourceViewModel
+@{
+    ViewData["Title"] = "Edit Api Resource";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+
+            <input type="hidden" asp-for="Id" />
+
+            @Html.Partial("_formFields", Model)
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
