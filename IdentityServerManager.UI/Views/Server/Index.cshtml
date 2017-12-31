@@ -1,0 +1,49 @@
+﻿@model IdentityServerManager.UI.Models.ServerViewModel
+@{
+    ViewData["Title"] = "Server";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+
+            <div class="card">
+                <div class="content">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Uri" class="control-label"></label>
+                                <input asp-for="Uri" class="form-control border-input" />
+                                <span asp-validation-for="Uri" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" class="form-control border-input"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pull-right">
+                                <input type="submit" value="Save" class="btn btn-success" data-toggle="tooltip" title="Save" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

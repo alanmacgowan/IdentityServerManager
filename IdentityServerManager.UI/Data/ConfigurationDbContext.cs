@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using IdentityServer4.EntityFramework.Entities;
+using IdentityServerManager.UI.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,8 @@ namespace IdentityServerManager.UI.Data
         public DbSet<IdentityResource> IdentityResources { get; set; }
 
         public DbSet<ApiResource> ApiResources { get; set; }
+
+        public DbSet<Server> Server { get; set; }
 
         public Task<int> SaveChangesAsync()
         {

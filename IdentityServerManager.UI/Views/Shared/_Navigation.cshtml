@@ -17,6 +17,12 @@
                     <p>Dashboard</p>
                 </a>
             </li>
+            <li class="@Html.IsSelected(controller:"Server")">
+                <a asp-area="" asp-controller="Server" asp-action="Index">
+                    <i class="ti-desktop"></i>
+                    <p>Server</p>
+                </a>
+            </li>
             <li class="@Html.IsSelected(controller:"Clients")">
                 <a asp-area="" asp-controller="Clients" asp-action="Index">
                     <i class="ti-server"></i>
