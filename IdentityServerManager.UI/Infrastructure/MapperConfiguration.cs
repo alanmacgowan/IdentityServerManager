@@ -12,6 +12,7 @@ namespace IdentityServerManager.UI.Infrastructure
                 cfg.AddProfile<ClientsMappingProfile>();
                 cfg.AddProfile<ApiResourcesMappingProfile>();
                 cfg.AddProfile<IdentityResourcesMappingProfile>();
+                cfg.AddProfile<ServerMappingProfile>();
             });
         }
 

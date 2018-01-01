@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using IdentityServer4.Models;
 using IdentityServerManager.UI.Data;
 using IdentityServerManager.UI.Entities;
 using IdentityServerManager.UI.Infrastructure;
 using IdentityServerManager.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace IdentityServerManager.UI.Controllers
 {
@@ -29,7 +34,20 @@ namespace IdentityServerManager.UI.Controllers
             {
                 server = new Server();
             }
-            return View(server.MapTo<ServerViewModel>());
+            var serverVM = server.MapTo<ServerViewModel>();
+            try
+            {
+                var client = new HttpClient();
+                var content = await client.GetAsync(server.Uri + ".well-known/openid-configuration");
+                string responseBody = await content.Content.ReadAsStringAsync();
+                serverVM.DiscoveryDocument = JsonConvert.DeserializeObject<DiscoveryDocument>(responseBody);
+            }
+            catch
+            {
+
+            }
+
+            return View(serverVM);
         }
 
         [HttpPost]
@@ -59,5 +77,7 @@ namespace IdentityServerManager.UI.Controllers
             }
             return View(serverVM);
         }
+
     }
+
 }

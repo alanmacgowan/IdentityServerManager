@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace IdentityServerManager.UI.Models
         [StringLength(400)]
         public string Uri { get; set; }
         public string Description { get; set; }
+        public DiscoveryDocument DiscoveryDocument { get; set; }
     }
 }

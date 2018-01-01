@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "Server";
 }
-
+<p>
+    <a href="@Model.Uri" target="_blank" class="btn btn-primary">Go To Server</a>
+</p>
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Edit">
@@ -30,6 +32,7 @@
                             </div>
                         </div>
                     </div>
+
                     <hr />
                     <div class="row">
                         <div class="col-md-12">
@@ -40,6 +43,119 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Discovery Document</h4>
+                </div>
+                <div class="content">
+                    @if (Model.DiscoveryDocument == null)
+                    {
+                        <div class="alert alert-danger alert-with-icon" data-notify="container">
+                            <button type="button" aria-hidden="true" class="close">×</button>
+                            <span data-notify="icon" class="fa fa-exclamation-triangle"></span>
+                            <span data-notify="message">No Discovery Document was found at the specified Uri. <br /> Please verify that the Uri is correct and that the server is online.</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.issuer" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.issuer" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.jwks_uri" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.jwks_uri" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.authorization_endpoint" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.authorization_endpoint" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.token_endpoint" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.token_endpoint" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.userinfo_endpoint" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.userinfo_endpoint" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.end_session_endpoint" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.end_session_endpoint" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.check_session_iframe" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.check_session_iframe" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.revocation_endpoint" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.revocation_endpoint" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.introspection_endpoint" class="control-label"></label>
+                                    <input asp-for="DiscoveryDocument.introspection_endpoint" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input asp-for="DiscoveryDocument.frontchannel_logout_supported" /> @Html.DisplayNameFor(model => model.DiscoveryDocument.frontchannel_logout_supported)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.scopes_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.scopes_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.claims_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.claims_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.response_types_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.response_types_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.response_modes_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.response_modes_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.grant_types_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.grant_types_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.subject_types_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.subject_types_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.id_token_signing_alg_values_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.id_token_signing_alg_values_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.token_endpoint_auth_methods_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.token_endpoint_auth_methods_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DiscoveryDocument.code_challenge_methods_supported" class="control-label"></label>
+                                    <input value="@string.Join(",", Model.DiscoveryDocument.code_challenge_methods_supported)" class="form-control border-input" disabled />
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input asp-for="DiscoveryDocument.frontchannel_logout_session_supported" /> @Html.DisplayNameFor(model => model.DiscoveryDocument.frontchannel_logout_session_supported)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
         </form>
     </div>
 </div>
