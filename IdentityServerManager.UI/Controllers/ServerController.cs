@@ -58,6 +58,7 @@ namespace IdentityServerManager.UI.Controllers
             {
                 try
                 {
+                    serverVM.Uri = (serverVM.Uri.Substring(serverVM.Uri.Length - 1, 1) == "/" ? serverVM.Uri : serverVM.Uri + "/");
                     _context.Update(serverVM.MapTo<Server>());
                     await _context.SaveChangesAsync();
                 }
