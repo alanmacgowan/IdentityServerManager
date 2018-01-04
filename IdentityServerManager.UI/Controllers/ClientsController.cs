@@ -5,6 +5,7 @@ using IdentityServerManager.UI.Infrastructure;
 using IdentityServerManager.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace IdentityServerManager.UI.Controllers
         {
             ViewData["SuccessMessage"] = SuccessMessage;
             var clients = await _context.Clients.ToListAsync();
-            return View(Mapper.Map<IEnumerable<Client>, IEnumerable<ClientViewModel>>(clients));
+            return View(Mapper.Map<IEnumerable<Client>, IEnumerable<ClientMainViewModel>>(clients));
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -42,83 +43,133 @@ namespace IdentityServerManager.UI.Controllers
                 return NotFound();
             }
 
-            return await Task.FromResult(PartialView("_details", client.MapTo<ClientViewModel>()));
+            return await Task.FromResult(PartialView("_details", client.MapTo<ClientMainViewModel>()));
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Main(int? id)
         {
-            var clientVM = new ClientViewModel
+            ClientMainViewModel clientVM;
+            if (id.HasValue)
             {
-                IdentityProtocolTypes = new List<string> {
+                var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == id);
+                if (client == null)
+                {
+                    return NotFound();
+                }
+                clientVM = client.MapTo<ClientMainViewModel>();
+            }
+            else
+            {
+                clientVM = new ClientMainViewModel();
+            }          
+            clientVM.IdentityProtocolTypes = new List<string> {
                     ProtocolTypes.OpenIdConnect,
                     ProtocolTypes.Saml2p,
-                    ProtocolTypes.WsFederation }
-            };
+                    ProtocolTypes.WsFederation };
+
             return View(clientVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ClientViewModel clientVM)
+        public async Task<IActionResult> Main(ClientMainViewModel clientVM)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(clientVM.MapTo<Client>());
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully created." });
+                if (clientVM.Id != 0)
+                {
+                    _context.Update(clientVM.MapTo<Client>());
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    _context.Add(clientVM.MapTo<Client>());
+                    clientVM.Id = await _context.SaveChangesAsync();
+                }
+
+                if (string.IsNullOrEmpty(clientVM.NextUrl))
+                {
+                    return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully created." });
+                }
+                else
+                {
+                    return RedirectToAction(clientVM.NextUrl, new { id = clientVM.Id, SuccessMessage = "Data successfully saved." });
+                }
             }
+            clientVM.NextUrl = string.Empty;
             return View(clientVM);
         }
 
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
+        public async Task<IActionResult> Scopes(int? id, string SuccessMessage = null)
+        {
+            ViewData["SuccessMessage"] = SuccessMessage;
             var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
                 return NotFound();
             }
-            var clientVM = client.MapTo<ClientViewModel>();
-            clientVM.IdentityProtocolTypes = new List<string> {
-                    ProtocolTypes.OpenIdConnect,
-                    ProtocolTypes.Saml2p,
-                    ProtocolTypes.WsFederation };
+            var clientVM = client.MapTo<ClientScopesViewModel>();
             return View(clientVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ClientViewModel clientVM)
+        public async Task<IActionResult> Scopes(ClientScopesViewModel clientVM)
         {
-            if (id != clientVM.Id)
+            if (ModelState.IsValid)
+            {
+                var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == clientVM.Id);
+                client.AllowedScopes = clientVM.AllowedScopes;
+                _context.Update(client);
+                await _context.SaveChangesAsync();
+
+                if (string.IsNullOrEmpty(clientVM.NextUrl))
+                {
+                    return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully edited." });
+                }
+                else
+                {
+                    return RedirectToAction(clientVM.NextUrl, new { id = clientVM.Id, SuccessMessage = "Data successfully saved." });
+                }
+            }
+            clientVM.NextUrl = string.Empty;
+            return View(clientVM);
+        }
+
+        public async Task<IActionResult> Claims(int? id, string SuccessMessage = null)
+        {
+            ViewData["SuccessMessage"] = SuccessMessage;
+            var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == id);
+            if (client == null)
             {
                 return NotFound();
             }
+            var clientVM = client.MapTo<ClientClaimsViewModel>();
+            return View(clientVM);
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Claims(ClientClaimsViewModel clientVM)
+        {
             if (ModelState.IsValid)
             {
-                try
+                var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == clientVM.Id);
+                client.Claims = clientVM.Claims;
+                _context.Update(client);
+                await _context.SaveChangesAsync();
+
+                if (string.IsNullOrEmpty(clientVM.NextUrl))
                 {
-                    _context.Update(clientVM.MapTo<Client>());
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully edited." });
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!ClientExists(clientVM.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return RedirectToAction(clientVM.NextUrl, new { id = clientVM.Id, SuccessMessage = "Data successfully saved." });
                 }
-                return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully edited." });
             }
+            clientVM.NextUrl = string.Empty;
             return View(clientVM);
         }
 

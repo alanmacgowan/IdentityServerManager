@@ -1,6 +1,11 @@
 var successMessage = $('#SuccessMessage').val();
+var isDirty = false;
 
 $(document).ready(function () {
+
+    $("input, select, textarea").on("change", function () {
+        isDirty = true;
+    });
 
     if (successMessage != "" && successMessage != undefined ) {
         $.notify({

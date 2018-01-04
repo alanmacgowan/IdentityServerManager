@@ -9,7 +9,9 @@ namespace IdentityServerManager.UI.Infrastructure
     {
         public ClientsMappingProfile()
         {
-            CreateMap<Client, ClientViewModel>().ReverseMap();
+            CreateMap<Client, ClientMainViewModel>().ReverseMap();
+            CreateMap<Client, ClientScopesViewModel>().ReverseMap();
+            CreateMap<Client, ClientClaimsViewModel>().ReverseMap();
         }
     }
 }

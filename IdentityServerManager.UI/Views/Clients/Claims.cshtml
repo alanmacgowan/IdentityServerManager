@@ -1,0 +1,62 @@
+﻿@model IdentityServerManager.UI.Models.ClientClaimsViewModel
+
+@{
+    ViewData["Title"] = "Client - Claims";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Claims" id="createForm" name="createForm">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Main')">Main</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Scopes')">Scopes</a></li>
+                <li role="presentation" class="active"><a href="#">Claims</a></li>
+            </ul>
+
+            <div class="card">
+                <div class="content">
+                    <input type="hidden" asp-for="NextUrl" />
+                    <input type="hidden" asp-for="Id" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pull-right">
+                                <input type="submit" value="Save" class="btn btn-success" data-toggle="tooltip" title="Save" />
+                                <a asp-action="Index" class="btn btn-danger" data-toggle="tooltip" title="Cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+        var isDirty = false;
+
+        $(document).ready(function () {
+
+            $("input, select, textarea").on("change", function () {
+                isDirty = true;
+            });
+
+        });
+
+        function saveData(url) {
+            //if (isDirty) {
+                $('#NextUrl').val(url);
+                $("#createForm").submit();
+            //}
+        }
+
+    </script>
+}

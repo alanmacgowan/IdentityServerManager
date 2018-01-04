@@ -6,7 +6,7 @@ using static IdentityServer4.IdentityServerConstants;
 
 namespace IdentityServerManager.UI.Models
 {
-    public class ClientViewModel
+    public class ClientMainViewModel
     {
         public int Id { get; set; }
         public bool Enabled { get; set; } = true;
@@ -58,7 +58,6 @@ namespace IdentityServerManager.UI.Models
         public bool BackChannelLogoutSessionRequired { get; set; } = true;
         [Display(Name = "Allow Offline Access")]
         public bool AllowOfflineAccess { get; set; }
-        public List<ClientScope> AllowedScopes { get; set; }
         [Display(Name = "Identity Token Lifetime")]
         public int IdentityTokenLifetime { get; set; } = 300;
         [Display(Name = "Access Token Lifetime")]
@@ -84,7 +83,6 @@ namespace IdentityServerManager.UI.Models
         public List<ClientIdPRestriction> IdentityProviderRestrictions { get; set; }
         [Display(Name = "Include Jwt Id")]
         public bool IncludeJwtId { get; set; }
-        public List<ClientClaim> Claims { get; set; }
         [Display(Name = "Always Send Client Claims")]
         public bool AlwaysSendClientClaims { get; set; }
         [StringLength(200)]
@@ -96,6 +94,8 @@ namespace IdentityServerManager.UI.Models
         public List<ClientCorsOrigin> AllowedCorsOrigins { get; set; }
         public List<ClientProperty> Properties { get; set; }
         public List<string> IdentityProtocolTypes { get; set; }
+
+        public string NextUrl { get; set; }
 
     }
 }
