@@ -10,8 +10,8 @@
         <form asp-action="Main" id="createForm" name="createForm">
             <ul class="nav nav-tabs">
                 <li role="presentation" class="active"><a href="#">Main</a></li>
-                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Scopes')">Scopes</a></li>
-                <li role="presentation"><a  href="javascript:void(0)" onclick="saveData('Claims')">Claims</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Scopes', '@Url.Action("Scopes", "Clients", new { @Model.Id })')">Scopes</a></li>
+                <li role="presentation"><a  href="javascript:void(0)" onclick="saveData('Claims', '@Url.Action("Claims", "Clients", new { @Model.Id })')">Claims</a></li>
             </ul>
 
             <div class="card">
@@ -27,21 +27,20 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="ClientId" class="control-label"></label>
-                        <input asp-for="ClientId" class="form-control border-input" />
-                        <span asp-validation-for="ClientId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ProtocolType" class="control-label"></label>
-                        <select asp-for="ProtocolType" class="form-control border-input" asp-items="@(new SelectList(Model.IdentityProtocolTypes))"></select>
-                        <span asp-validation-for="ProtocolType" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input asp-for="RequireClientSecret" /> @Html.DisplayNameFor(model => model.RequireClientSecret)
-                            </label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ClientId" class="control-label"></label>
+                                <input asp-for="ClientId" class="form-control border-input" />
+                                <span asp-validation-for="ClientId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ProtocolType" class="control-label"></label>
+                                <select asp-for="ProtocolType" class="form-control border-input" asp-items="@(new SelectList(Model.IdentityProtocolTypes))"></select>
+                                <span asp-validation-for="ProtocolType" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -53,6 +52,13 @@
                         <label asp-for="Description" class="control-label"></label>
                         <textarea asp-for="Description" class="form-control border-input"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="RequireClientSecret" /> @Html.DisplayNameFor(model => model.RequireClientSecret)
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClientUri" class="control-label"></label>
@@ -159,6 +165,11 @@
                                 <input asp-for="ConsentLifetime" class="form-control border-input" />
                                 <span asp-validation-for="ConsentLifetime" class="text-danger"></span>
                             </div>
+                            <div class="form-group">
+                                <label asp-for="AccessTokenType" class="control-label"></label>
+                                <select asp-for="AccessTokenType" class="form-control border-input" asp-items="@(IdentityServer4.Models.AccessTokenType.Jwt.ToSelectList(Model.AccessTokenType))"></select>
+                                <span asp-validation-for="AccessTokenType" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -181,13 +192,14 @@
                                 <select asp-for="RefreshTokenExpiration" class="form-control border-input" asp-items="@(IdentityServer4.Models.TokenExpiration.Absolute.ToSelectList(Model.RefreshTokenExpiration))"></select>
                                 <span asp-validation-for="RefreshTokenExpiration" class="text-danger"></span>
                             </div>
+                            <div class="form-group">
+                                <label asp-for="ClientClaimsPrefix" class="control-label"></label>
+                                <input asp-for="ClientClaimsPrefix" class="form-control border-input" />
+                                <span asp-validation-for="ClientClaimsPrefix" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="AccessTokenType" class="control-label"></label>
-                        <select asp-for="AccessTokenType" class="form-control border-input" asp-items="@(IdentityServer4.Models.AccessTokenType.Jwt.ToSelectList(Model.AccessTokenType))"></select>
-                        <span asp-validation-for="AccessTokenType" class="text-danger"></span>
-                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -231,11 +243,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="ClientClaimsPrefix" class="control-label"></label>
-                        <input asp-for="ClientClaimsPrefix" class="form-control border-input" />
-                        <span asp-validation-for="ClientClaimsPrefix" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
                         <label asp-for="PairWiseSubjectSalt" class="control-label"></label>
                         <input asp-for="PairWiseSubjectSalt" class="form-control border-input" />
                         <span asp-validation-for="PairWiseSubjectSalt" class="text-danger"></span>
@@ -258,24 +265,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script type="text/javascript">
-
-
-        $(document).ready(function () {
-
-
-        });
-
-        function saveData(url) {
-            if (isDirty) {
-                $('#NextUrl').val(url);
-                $("#createForm").submit();
-            }
-            else {
-                location.href = url;
-            }
-        }
-
-    </script>
 }

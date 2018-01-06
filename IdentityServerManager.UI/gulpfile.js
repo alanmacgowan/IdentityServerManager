@@ -34,8 +34,8 @@ var jsVendorSourceFiles = [
 ];
 var jsAppSourceFiles = [
     jsPath + '/site.js',
-    //jsPath + '/backtotop.js',
-    //jsPath + '/spin.js',
+    jsPath + '/spin.js',
+    jsPath + '/utils.js',
     //jsPath + '/utils.js',
     //jsPath + '/jquery.serializeObject.js',
 ];

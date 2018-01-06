@@ -3,6 +3,8 @@ var isDirty = false;
 
 $(document).ready(function () {
 
+    utils.ui.hideSpinner();
+
     $("input, select, textarea").on("change", function () {
         isDirty = true;
     });
@@ -26,6 +28,17 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
 });
+
+function saveData(nextUrl, url) {
+    utils.ui.showSpinner();
+    if (isDirty) {
+        $('#NextUrl').val(nextUrl);
+        $("#createForm").submit();
+    }
+    else {
+        location.href = url;
+    }
+}
 
 function deleteItem(id) {
     BootstrapDialog.show({

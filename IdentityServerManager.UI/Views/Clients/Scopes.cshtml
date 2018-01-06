@@ -8,9 +8,9 @@
     <div class="col-md-12">
         <form asp-action="Scopes" id="createForm" name="createForm">
             <ul class="nav nav-tabs">
-                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Main')">Main</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Main', '@Url.Action("Main", "Clients", new { @Model.Id })')">Main</a></li>
                 <li role="presentation" class="active"><a>Scopes</a></li>
-                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Claims')">Claims</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Claims', '@Url.Action("Claims", "Clients", new { @Model.Id })')">Claims</a></li>
             </ul>
 
             <div class="card">
@@ -132,13 +132,6 @@
 
 
         });
-
-        function saveData(url) {
-            //if (isDirty) {
-            $('#NextUrl').val(url);
-            $("#createForm").submit();
-            //}
-        }
 
     </script>
 }
