@@ -58,8 +58,6 @@ namespace IdentityServerManager.UI.Data
 
         public DbSet<IdentityClaim> IdentityClaims { get; set; }
 
-        public DbSet<PersistedGrant> PersistedGrants { get; set; }
-
         public DbSet<Server> Server { get; set; }
 
         public Task<int> SaveChangesAsync()
