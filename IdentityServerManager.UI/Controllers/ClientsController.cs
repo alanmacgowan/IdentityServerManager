@@ -104,7 +104,8 @@ namespace IdentityServerManager.UI.Controllers
         public async Task<IActionResult> Scopes(int? id, string SuccessMessage = null)
         {
             ViewData["SuccessMessage"] = SuccessMessage;
-            var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == id);
+            var s = new ClientScope();
+            var client = await _context.Clients.Include(c => c.AllowedScopes).SingleOrDefaultAsync(c => c.Id == id);
             if (client == null)
             {
                 return NotFound();

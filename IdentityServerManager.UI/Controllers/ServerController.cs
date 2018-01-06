@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using IdentityServer4.Models;
+﻿using IdentityServer4.Models;
 using IdentityServerManager.UI.Data;
 using IdentityServerManager.UI.Entities;
 using IdentityServerManager.UI.Infrastructure;
@@ -12,7 +6,9 @@ using IdentityServerManager.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace IdentityServerManager.UI.Controllers
 {
