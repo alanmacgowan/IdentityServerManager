@@ -264,17 +264,17 @@
 
         $(document).ready(function () {
 
-            $('form').bind('invalid-form.validate', function () {
-                $('#NextUrl').val('');
-            });
 
         });
 
         function saveData(url) {
-            //if (isDirty) {
+            if (isDirty) {
                 $('#NextUrl').val(url);
                 $("#createForm").submit();
-            //}
+            }
+            else {
+                location.href = url;
+            }
         }
 
     </script>

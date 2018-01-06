@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <form asp-action="Scopes" id="createForm" name="createForm">
             <ul class="nav nav-tabs">
-                <li role="presentation"><a  href="javascript:void(0)" onclick="saveData('Main')">Main</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Main')">Main</a></li>
                 <li role="presentation" class="active"><a>Scopes</a></li>
                 <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Claims')">Claims</a></li>
             </ul>
@@ -19,6 +19,37 @@
                     <input type="hidden" asp-for="Id" />
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="AvailableScopes" class="control-label"></label>
+                                @Html.ListBoxFor(model => model.AvailableScopes, new MultiSelectList(Model.AvailableScopes.OrderBy(i => i.Id), "Id", "Name"), new { @class = "form-control border-input", @size = "12" })
+                                <span asp-validation-for="AvailableScopes" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group text-center">
+                                <br />
+                                <input id="assignAll" type="button" value=">>" class="btn btn-success" data-toggle="tooltip" title="Assign All" />
+                                <br /><br />
+                                <input id="assign" type="button" value="&nbsp;>&nbsp;" class="btn btn-success" data-toggle="tooltip" title="Assign" />
+                                <br /><br />
+                                <input id="unassign" type="button" value="&nbsp;<&nbsp;" class="btn btn-success" data-toggle="tooltip" title="Unassign" />
+                                <br /><br />
+                                <input id="unassignAll" type="button" value="<<" class="btn btn-success" data-toggle="tooltip" title="Unassign All" />
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="AssignedScopes" class="control-label"></label>
+                                @Html.ListBoxFor(model => model.AssignedScopes, new MultiSelectList(Model.AssignedScopes.OrderBy(i => i.Id), "Id", "Name"), new { @class = "form-control border-input", @size = "12" })
+                                <span asp-validation-for="AssignedScopes" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="AssignedResources" />
+
 
                     <hr />
                     <div class="row">
@@ -41,20 +72,71 @@
 
     <script type="text/javascript">
 
-        var isDirty = false;
+        var assignedVals = [];
 
         $(document).ready(function () {
 
-            $("input, select, textarea").on("change", function () {
-                isDirty = true;
+            saveAssigned();
+
+            $('#assign').on('click', function (e) {
+                var selectedOpts = $('#AvailableScopes option:selected');
+                if (selectedOpts.length == 0) {
+                    e.preventDefault();
+                }
+                $('#AssignedScopes').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+                saveAssigned();
             });
+
+            $('#assignAll').on('click', function (e) {
+                var selectedOpts = $('#AvailableScopes option');
+                if (selectedOpts.length == 0) {
+                    e.preventDefault();
+                }
+                $('#AssignedScopes').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+                saveAssigned();
+            });
+
+            $('#unassign').on('click', function (e) {
+                var selectedOpts = $('#AssignedScopes option:selected');
+                if (selectedOpts.length == 0) {
+                    e.preventDefault();
+                }
+                $('#AvailableScopes').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+                saveAssigned();
+            });
+
+            $('#unassignAll').on('click', function (e) {
+                var selectedOpts = $('#AssignedScopes option');
+                if (selectedOpts.length == 0) {
+                    e.preventDefault();
+                }
+                $('#AvailableScopes').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+                saveAssigned();
+            });
+
+            function saveAssigned() {
+                assignedVals = [];
+                $("#AssignedScopes option").each(function () {
+                    assignedVals.push({ Id: this.value, Name: this.value });
+                });
+                $('#AssignedResources').val(JSON.stringify(assignedVals));
+            };
+
 
         });
 
         function saveData(url) {
             //if (isDirty) {
-                $('#NextUrl').val(url);
-                $("#createForm").submit();
+            $('#NextUrl').val(url);
+            $("#createForm").submit();
             //}
         }
 

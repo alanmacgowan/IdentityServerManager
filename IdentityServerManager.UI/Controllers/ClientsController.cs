@@ -5,6 +5,7 @@ using IdentityServerManager.UI.Infrastructure;
 using IdentityServerManager.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace IdentityServerManager.UI.Controllers
             return await Task.FromResult(PartialView("_details", client.MapTo<ClientMainViewModel>()));
         }
 
-        public async Task<IActionResult> Main(int? id)
+        public async Task<IActionResult> Main(int? id, string SuccessMessage = null)
         {
             ClientMainViewModel clientVM;
             if (id.HasValue)
@@ -104,24 +105,33 @@ namespace IdentityServerManager.UI.Controllers
         public async Task<IActionResult> Scopes(int? id, string SuccessMessage = null)
         {
             ViewData["SuccessMessage"] = SuccessMessage;
-            var s = new ClientScope();
+
             var client = await _context.Clients.Include(c => c.AllowedScopes).SingleOrDefaultAsync(c => c.Id == id);
             if (client == null)
             {
                 return NotFound();
             }
             var clientVM = client.MapTo<ClientScopesViewModel>();
+            var identityResources = _context.IdentityResources.Select(x => new Resource { Id = x.Name, Name = x.DisplayName });
+            var apiResources = _context.ApiResources.Select(x => new Resource { Id = x.Name, Name = $"{x.Name} - {x.DisplayName}" });
+            var assignedResources = clientVM.AllowedScopes.Select(x => new Resource { Id = x.Scope, Name = $"{x.Scope} - {x.Scope}" }).ToList();
+            var availableResources = identityResources.Union(apiResources).Where(x => !assignedResources.Select(r => r.Id).Contains(x.Id)).ToList();
+
+            clientVM.AssignedScopes = assignedResources;
+            clientVM.AvailableScopes = availableResources;
             return View(clientVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Scopes(ClientScopesViewModel clientVM)
+        public async Task<IActionResult> Scopes([FromForm]ClientScopesViewModel clientVM)
         {
             if (ModelState.IsValid)
             {
-                var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == clientVM.Id);
-                client.AllowedScopes = clientVM.AllowedScopes;
+                var scopes = JsonConvert.DeserializeObject<List<Resource>>(clientVM.AssignedResources);
+                var client = await _context.Clients.Include(c => c.AllowedScopes).SingleOrDefaultAsync(m => m.Id == clientVM.Id);
+                _context.RemoveRange(client.AllowedScopes);
+                client.AllowedScopes = scopes.Select(x => new ClientScope {Scope = x.Id, Client = client }).ToList();
                 _context.Update(client);
                 await _context.SaveChangesAsync();
 
