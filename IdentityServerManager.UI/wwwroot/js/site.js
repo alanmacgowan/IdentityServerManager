@@ -1,4 +1,5 @@
 ﻿var successMessage = $('#SuccessMessage').val();
+var errorMessage = $('#ErrorMessage').val();
 var isDirty = false;
 
 $(document).ready(function () {
@@ -17,10 +18,18 @@ $(document).ready(function () {
         }, { type: 'success', timer: 2000 });
     }
 
+    if (errorMessage != "" && errorMessage != undefined) {
+        $.notify({
+            title: 'Error',
+            icon: 'fa fa-times',
+            message: errorMessage
+        }, { type: 'danger', timer: 2000 });
+    }
+
     $('form').bind('invalid-form.validate', function () {
         $.notify({
             title: 'Warning',
-            icon: 'fa fa-exclamation-triangle',
+            icon: 'fa fa-exclamation',
             message: 'There are invalid fields.'
         }, { type: 'warning', timer: 2000 });
     });

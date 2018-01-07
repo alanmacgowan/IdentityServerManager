@@ -10,6 +10,7 @@ using IdentityServerManager.UI.Data;
 using IdentityServerManager.UI.Models;
 using AutoMapper;
 using IdentityServerManager.UI.Infrastructure;
+using System.Data.SqlClient;
 
 namespace IdentityServerManager.UI.Controllers
 {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityServerManager.UI.Infrastructure;
 using AutoMapper;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace IdentityServerManager.UI
 {
@@ -26,7 +27,10 @@ namespace IdentityServerManager.UI
             services.AddDbContext<ConfigurationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityServerConnection")));
 
-            services.AddMvc();
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add(new EFExceptionFilterAttribute());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,15 +38,15 @@ namespace IdentityServerManager.UI
         {
             db.Database.Migrate();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseBrowserLink();
+            //}
+            //else
+            //{
+            app.UseExceptionHandler("/Error/Handle");
+            //}
 
             app.UseStaticFiles();
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using IdentityServerManager.UI.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace IdentityServerManager.UI.Controllers
 {
@@ -29,9 +30,5 @@ namespace IdentityServerManager.UI.Controllers
             return View();
         }
 
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

@@ -39,6 +39,7 @@
     </div>
 
     @Html.Hidden("SuccessMessage", (ViewData["SuccessMessage"] != null ? ViewData["SuccessMessage"].ToString() : ""))
+    @Html.Hidden("ErrorMessage", (ViewData["ErrorMessage"] != null ? ViewData["ErrorMessage"].ToString() : ""))
 
     <environment include="Development">
         <script src="~/js/dist/scripts.vendor.js" asp-append-version="true"></script>
