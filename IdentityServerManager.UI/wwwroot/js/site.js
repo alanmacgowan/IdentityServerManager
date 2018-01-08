@@ -10,7 +10,7 @@ $(document).ready(function () {
         isDirty = true;
     });
 
-    if (successMessage != "" && successMessage != undefined ) {
+    if (successMessage != "" && successMessage != undefined) {
         $.notify({
             title: 'Success',
             icon: 'fa fa-check',
@@ -27,6 +27,7 @@ $(document).ready(function () {
     }
 
     $('form').bind('invalid-form.validate', function () {
+        utils.ui.hideSpinner();
         $.notify({
             title: 'Warning',
             icon: 'fa fa-exclamation',
@@ -38,15 +39,18 @@ $(document).ready(function () {
 
 });
 
-function saveData(nextUrl, url) {
+function saveData(controller, action) {
     utils.ui.showSpinner();
     if (isDirty) {
-        $('#NextUrl').val(nextUrl);
+        $('#NextUrl').val(action);
         $("#createForm").submit();
     }
     else {
-        location.href = url;
+        if ($('#Id').val() != 0) {
+            location.href = '/' + controller + '/' + action + '/' + $('#Id').val();
+        }
     }
+
 }
 
 function deleteItem(id) {

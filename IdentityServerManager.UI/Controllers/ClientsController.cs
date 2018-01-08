@@ -77,16 +77,16 @@ namespace IdentityServerManager.UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                var client = clientVM.MapTo<Client>();
                 if (clientVM.Id != 0)
                 {
-                    _context.Update(clientVM.MapTo<Client>());
-                    await _context.SaveChangesAsync();
+                    _context.Update(client);
                 }
                 else
                 {
-                    _context.Add(clientVM.MapTo<Client>());
-                    clientVM.Id = await _context.SaveChangesAsync();
+                    _context.Add(client);
                 }
+                await _context.SaveChangesAsync();
 
                 if (string.IsNullOrEmpty(clientVM.NextUrl))
                 {
@@ -94,7 +94,7 @@ namespace IdentityServerManager.UI.Controllers
                 }
                 else
                 {
-                    return RedirectToAction(clientVM.NextUrl, new { id = clientVM.Id, SuccessMessage = "Data successfully saved." });
+                    return RedirectToAction(clientVM.NextUrl, new { id = client.Id, SuccessMessage = "Data successfully saved." });
                 }
             }
             clientVM.NextUrl = string.Empty;

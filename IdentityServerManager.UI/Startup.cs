@@ -25,11 +25,13 @@ namespace IdentityServerManager.UI
             services.AddAutoMapper();
 
             services.AddDbContext<ConfigurationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityServerConnection")));
-
-            services.AddMvc(opt =>
             {
-                opt.Filters.Add(new EFExceptionFilterAttribute());
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityServerConnection"));
+            });
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new EFExceptionFilterAttribute());
             });
         }
 

@@ -8,8 +8,8 @@
     <div class="col-md-12">
         <form asp-action="Claims" id="createForm" name="createForm">
             <ul class="nav nav-tabs">
-                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Main', '@Url.Action("Main", "Clients", new { @Model.Id })')">Main</a></li>
-                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Scopes', '@Url.Action("Scopes", "Clients", new { @Model.Id })')">Scopes</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Clients', 'Main')">Main</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Clients', 'Scopes')">Scopes</a></li>
                 <li role="presentation" class="active"><a href="#">Claims</a></li>
             </ul>
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IdentityServerManager.UI.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,16 +26,32 @@ namespace IdentityServerManager.UI.Infrastructure
 
         public override void OnException(ExceptionContext context)
         {
-            if ((context.Exception.InnerException as SqlException)?.Number == 2601 || (context.Exception.InnerException as SqlException)?.Number == 2627)
+            var message = "";
+            var exception = context.Exception;
+            if (exception.GetType() == typeof(DbUpdateException) && (exception.InnerException as SqlException)?.Number == 2601 || (exception.InnerException as SqlException)?.Number == 2627)
             {
-                var result = new ViewResult { ViewName = context.ActionDescriptor.RouteValues["action"] };
-                var modelMetadata = new EmptyModelMetadataProvider();
-                result.ViewData = new ViewDataDictionary(modelMetadata, context.ModelState);
-                result.ViewData.Add("ErrorMessage", "Cannot insert duplicate Name.");
-                context.Exception = null;
-                context.ExceptionHandled = true;
-                context.Result = result;
+                message = "Cannot insert duplicate Name.";
             }
+            else if (exception.GetType() == typeof(DbUpdateConcurrencyException))
+            {
+                message = "The record you attempted to edit was modified by another user after you got the original value. The operation was canceled.";
+            }
+            foreach (var item in context.ModelState)
+            {
+                string parameter = item.Key;
+                object rawValue = item.Value.RawValue;
+                string attemptedValue = item.Value.AttemptedValue;
+
+                System.Console.WriteLine($"Parameter: {parameter}, value: {attemptedValue}");
+            }
+            var result = new ViewResult { ViewName = context.ActionDescriptor.RouteValues["action"] };
+            var modelMetadata = new EmptyModelMetadataProvider();
+            result.ViewData = new ViewDataDictionary(modelMetadata, context.ModelState);
+           // result.ViewData.Model = context.ModelState;
+            result.ViewData.Add("ErrorMessage", message);
+            context.Exception = null;
+            context.ExceptionHandled = true;
+            context.Result = result;
 
         }
     }

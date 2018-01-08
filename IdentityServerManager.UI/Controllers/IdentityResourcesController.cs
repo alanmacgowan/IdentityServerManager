@@ -1,15 +1,13 @@
-﻿using System;
+﻿using AutoMapper;
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServerManager.UI.Data;
+using IdentityServerManager.UI.Infrastructure;
+using IdentityServerManager.UI.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using IdentityServer4.EntityFramework.Entities;
-using IdentityServerManager.UI.Data;
-using IdentityServerManager.UI.Models;
-using AutoMapper;
-using IdentityServerManager.UI.Infrastructure;
 
 namespace IdentityServerManager.UI.Controllers
 {
@@ -36,8 +34,7 @@ namespace IdentityServerManager.UI.Controllers
                 return NotFound();
             }
 
-            var identityResource = await _context.IdentityResources
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var identityResource = await _context.IdentityResources.SingleOrDefaultAsync(m => m.Id == id);
             if (identityResource == null)
             {
                 return NotFound();
@@ -81,32 +78,13 @@ namespace IdentityServerManager.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, IdentityResourceViewModel identityResourceVM)
+        public async Task<IActionResult> Edit(IdentityResourceViewModel identityResourceVM)
         {
-            if (id != identityResourceVM.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(identityResourceVM.MapTo<IdentityResource>());
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!IdentityResourceExists(identityResourceVM.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index), new { SuccessMessage = "Identity Resource successfully edited." } );
+                _context.Update(identityResourceVM.MapTo<IdentityResource>());
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { SuccessMessage = "Identity Resource successfully edited." });
             }
             return View(identityResourceVM);
         }
@@ -121,9 +99,5 @@ namespace IdentityServerManager.UI.Controllers
             return RedirectToAction(nameof(Index), new { SuccessMessage = "Identity Resource successfully deleted." });
         }
 
-        private bool IdentityResourceExists(int id)
-        {
-            return _context.IdentityResources.Any(e => e.Id == id);
-        }
     }
 }

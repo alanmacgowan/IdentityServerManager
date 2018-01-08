@@ -81,31 +81,12 @@ namespace IdentityServerManager.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ApiResourceViewModel apiResourceVM)
+        public async Task<IActionResult> Edit(ApiResourceViewModel apiResourceVM)
         {
-            if (id != apiResourceVM.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(apiResourceVM.MapTo<ApiResource>());
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ApiResourceExists(apiResourceVM.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Update(apiResourceVM.MapTo<ApiResource>());
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { SuccessMessage = "Api Resource successfully edited." });
             }
             return View(apiResourceVM);
@@ -121,9 +102,5 @@ namespace IdentityServerManager.UI.Controllers
             return RedirectToAction(nameof(Index), new { SuccessMessage = "Api Resource successfully deleted." });
         }
 
-        private bool ApiResourceExists(int id)
-        {
-            return _context.ApiResources.Any(e => e.Id == id);
-        }
     }
 }

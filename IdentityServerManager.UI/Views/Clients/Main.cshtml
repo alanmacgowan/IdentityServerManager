@@ -1,4 +1,5 @@
 ﻿@using IdentityServerManager.UI.Infrastructure
+@using Microsoft.AspNetCore.Mvc.Rendering
 @model IdentityServerManager.UI.Models.ClientMainViewModel
 
 @{
@@ -10,8 +11,8 @@
         <form asp-action="Main" id="createForm" name="createForm">
             <ul class="nav nav-tabs">
                 <li role="presentation" class="active"><a href="#">Main</a></li>
-                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Scopes', '@Url.Action("Scopes", "Clients", new { @Model.Id })')">Scopes</a></li>
-                <li role="presentation"><a  href="javascript:void(0)" onclick="saveData('Claims', '@Url.Action("Claims", "Clients", new { @Model.Id })')">Claims</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Clients', 'Scopes')">Scopes</a></li>
+                <li role="presentation"><a  href="javascript:void(0)" onclick="saveData('Clients', 'Claims')">Claims</a></li>
             </ul>
 
             <div class="card">
