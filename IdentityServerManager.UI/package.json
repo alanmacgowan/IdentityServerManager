@@ -4,6 +4,7 @@
   "description": "application to manage identity server clients, api and identity resources",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.17.1",
     "bootstrap-dialog": "^1.34.6",
     "font-awesome": "^4.7.0",
     "moment": "^2.18.1",

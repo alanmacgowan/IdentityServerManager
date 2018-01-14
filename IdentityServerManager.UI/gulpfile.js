@@ -31,12 +31,12 @@ var jsVendorSourceFiles = [
     nodeModulesPath + '/bootstrap-dialog/dist/js/bootstrap-dialog.min.js',
     nodeModulesPath + '/moment/moment.js',
     nodeModulesPath + '/select2/dist/js/select2.js',
+    nodeModulesPath + '/axios/dist/axios.min.js',
 ];
 var jsAppSourceFiles = [
     jsPath + '/site.js',
     jsPath + '/spin.js',
     jsPath + '/utils.js',
-    //jsPath + '/utils.js',
     //jsPath + '/jquery.serializeObject.js',
 ];
 
