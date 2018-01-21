@@ -1,0 +1,1 @@
+/opt/mssql-tools/bin/sqlcmd -S localhost,1500 -U sa -P Passw0rd -d master -i database.sql

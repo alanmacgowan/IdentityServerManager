@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  identityservermanager.ui:
+    image: identityservermanager.ui
+    build:
+      context: .
+      dockerfile: IdentityServerManager.UI\Dockerfile

@@ -12,9 +12,19 @@ namespace IdentityServerManager.UI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+        #if Release
+            .AddJsonFile($"appsettings.Production.json", optional: true)
+        #else
+            .AddJsonFile($"appsettings.Development.json", optional: true)
+        #endif
+            .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
