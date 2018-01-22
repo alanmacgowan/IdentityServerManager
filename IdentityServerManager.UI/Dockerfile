@@ -4,10 +4,11 @@ EXPOSE 5000
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
-COPY IdentityServerManager.UI.csproj ./
+COPY *.sln ./
+COPY IdentityServerManager.UI/IdentityServerManager.UI.csproj IdentityServerManager.UI/
 RUN dotnet restore
-COPY . ./
-WORKDIR /src/
+COPY . .
+WORKDIR /src/IdentityServerManager.UI
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
