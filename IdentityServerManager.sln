@@ -10,8 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db", "db", "{D904891A-1A14-4DA4-AAA7-64B80935BA22}"
 	ProjectSection(SolutionItems) = preProject
 		database.sql = database.sql
-		Dockerfile. = Dockerfile.
+		Dockerfile = Dockerfile
 		entrypoint.sh = entrypoint.sh
+		Initialize-Database.ps1 = Initialize-Database.ps1
 		sqlstartup.sh = sqlstartup.sh
 	EndProjectSection
 EndProject

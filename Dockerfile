@@ -1,9 +1,13 @@
-FROM microsoft/mssql-server-linux
-ENV SA_PASSWORD=Passw0rd
-ENV ACCEPT_EULA=Y
-COPY sleep.sh sleep.sh
-COPY entrypoint.sh entrypoint.sh
-COPY sqlstartup.sh sqlstartup.sh
-COPY database.sql database.sql
-RUN chmod +x ./sqlstartup.sh
-CMD /bin/bash ./entrypoint.sh
+# escape=`
+
+FROM microsoft/mssql-server-windows-express
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
+
+EXPOSE 1433
+# VOLUME c:\\database
+ENV sa_password p@ssword
+
+WORKDIR c:\\init
+COPY . .
+
+CMD ./Initialize-Database.ps1 -sa_password $env:sa_password -db_name IdentityServerSample.OAuth -Verbose

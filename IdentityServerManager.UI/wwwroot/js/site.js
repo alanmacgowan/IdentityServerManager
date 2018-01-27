@@ -4,36 +4,20 @@ var isDirty = false;
 
 $(document).ready(function () {
 
-    utils.ui.hideSpinner();
+    //utils.ui.hideSpinner();
+    $('.select').select2();
 
     $("input, select, textarea").on("change", function () {
         isDirty = true;
     });
 
     if (successMessage != "" && successMessage != undefined) {
-        $.notify({
-            title: 'Success',
-            icon: 'fa fa-check',
-            message: successMessage
-        }, { type: 'success', timer: 2000 });
+        utils.notification.showSuccess(successMessage);
     }
 
     if (errorMessage != "" && errorMessage != undefined) {
-        $.notify({
-            title: 'Error',
-            icon: 'fa fa-times',
-            message: errorMessage
-        }, { type: 'danger', timer: 2000 });
+        utils.notification.showError(errorMessage);
     }
-
-    $('form').bind('invalid-form.validate', function () {
-        utils.ui.hideSpinner();
-        $.notify({
-            title: 'Warning',
-            icon: 'fa fa-exclamation',
-            message: 'There are invalid fields.'
-        }, { type: 'warning', timer: 2000 });
-    });
 
     $('[data-toggle="tooltip"]').tooltip();
 

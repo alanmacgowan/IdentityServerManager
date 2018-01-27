@@ -13,8 +13,15 @@
             saveData(controller, data, 'Create');
         }
 
+        function getFormData() {
+            var formData = $("form").serialize({ checkboxesAsBools: true }).split("&");
+            var obj = {};
+            $.each(formData, function (index) { obj[formData[index].split("=")[0]] = formData[index].split("=")[1]; });
+            return obj;
+        }
+
         function saveData(controller, data, action) {
-            var values = data || $('form').serializeObject();
+            var values = data || getFormData();
             var validator = $("form").validate();
             if (validator.form()) {
                 utils.http.post({ url: '/' + controller + '/' + action, data: values }, function (response) {
@@ -25,10 +32,9 @@
                                 $(elem).addClass('invalid-field').removeClass('valid-field');
                             }
                         }
-                        toastr.warning('There are some invalid fields.');
+                        notification.showWarning();
                     } else {
-                        toastr.success('Successfull operation.');
-                        location.href = '/' + controller;
+                        location.href = '/' + controller + '/index?SuccessMessage=Successful operation.' ;
                     }
                 });
             } else {
@@ -36,15 +42,60 @@
                     $(element).addClass('invalid-field').removeClass('valid-field');
                 });
                 validator.validElements().each(function (index, element) {
-                    $(element).addClass('valid-field').removeClass('invalid-field');
+                   // $(element).addClass('valid-field').removeClass('invalid-field');
                 });
-                toastr.warning('There are some invalid fields.');
+                notification.showWarning();
             }
         }
 
         return {
             saveCreate: saveCreate,
             saveEdit: saveEdit
+        }
+
+    })();
+
+    var notification = (function () {
+     
+        function setSuccessMessage(message) {
+            $('#SuccessMessage').val(message || 'Successful operation.')
+        }
+
+        function setErrorMessage(message) {
+            $('#ErrorMessage').val(message || 'There was an error processing the operation.')
+        }
+
+        function showSuccess(message) {
+            $.notify({
+                title: 'Success',
+                icon: 'fa fa-check',
+                message: message || 'Successful operation.'
+            }, { type: 'success', timer: 2000 });
+        }
+
+        function showError(message) {
+            $.notify({
+                title: 'Error',
+                icon: 'fa fa-times',
+                message: message || 'There was an error processing the operation.'
+            }, { type: 'danger', timer: 2000 });
+        }
+
+        function showWarning(message) {
+            $.notify({
+                title: 'Warning',
+                icon: 'fa fa-exclamation',
+                message: message || 'There are invalid fields.'
+            }, { type: 'warning', timer: 2000 });
+        }
+
+        return {
+            showSuccess: showSuccess,
+            showError: showError,
+            showWarning: showWarning,
+            setSuccessMessage: setSuccessMessage,
+            setErrorMessage: setErrorMessage
+
         }
 
     })();
@@ -76,14 +127,14 @@
 
         function successCallbackFunction(response) {
             if (response) {
-                toastr.success(successMessage);
+                notification.showSuccess();
             } else {
-                toastr.error(errorMessage);
+                notification.showError();
             }
         }
 
         function errorCallbackFunction() {
-            toastr.error(errorMessage);
+            notification.showError();
         }
 
         function post(options, successCallback, errorCallback) {
@@ -134,7 +185,8 @@
             constructor: utils,
             form: form,
             http: http,
-            ui: ui
+            ui: ui,
+            notification: notification
         };
     })();
 

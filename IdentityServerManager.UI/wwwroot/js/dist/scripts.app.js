@@ -4,36 +4,20 @@ var isDirty = false;
 
 $(document).ready(function () {
 
-    utils.ui.hideSpinner();
+    //utils.ui.hideSpinner();
+    $('.select').select2();
 
     $("input, select, textarea").on("change", function () {
         isDirty = true;
     });
 
     if (successMessage != "" && successMessage != undefined) {
-        $.notify({
-            title: 'Success',
-            icon: 'fa fa-check',
-            message: successMessage
-        }, { type: 'success', timer: 2000 });
+        utils.notification.showSuccess(successMessage);
     }
 
     if (errorMessage != "" && errorMessage != undefined) {
-        $.notify({
-            title: 'Error',
-            icon: 'fa fa-times',
-            message: errorMessage
-        }, { type: 'danger', timer: 2000 });
+        utils.notification.showError(errorMessage);
     }
-
-    $('form').bind('invalid-form.validate', function () {
-        utils.ui.hideSpinner();
-        $.notify({
-            title: 'Warning',
-            icon: 'fa fa-exclamation',
-            message: 'There are invalid fields.'
-        }, { type: 'warning', timer: 2000 });
-    });
 
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -486,8 +470,15 @@ function showDetails(id, module) {
             saveData(controller, data, 'Create');
         }
 
+        function getFormData() {
+            var formData = $("form").serialize({ checkboxesAsBools: true }).split("&");
+            var obj = {};
+            $.each(formData, function (index) { obj[formData[index].split("=")[0]] = formData[index].split("=")[1]; });
+            return obj;
+        }
+
         function saveData(controller, data, action) {
-            var values = data || $('form').serializeObject();
+            var values = data || getFormData();
             var validator = $("form").validate();
             if (validator.form()) {
                 utils.http.post({ url: '/' + controller + '/' + action, data: values }, function (response) {
@@ -498,10 +489,9 @@ function showDetails(id, module) {
                                 $(elem).addClass('invalid-field').removeClass('valid-field');
                             }
                         }
-                        toastr.warning('There are some invalid fields.');
+                        notification.showWarning();
                     } else {
-                        toastr.success('Successfull operation.');
-                        location.href = '/' + controller;
+                        location.href = '/' + controller + '/index?SuccessMessage=Successful operation.' ;
                     }
                 });
             } else {
@@ -509,15 +499,60 @@ function showDetails(id, module) {
                     $(element).addClass('invalid-field').removeClass('valid-field');
                 });
                 validator.validElements().each(function (index, element) {
-                    $(element).addClass('valid-field').removeClass('invalid-field');
+                   // $(element).addClass('valid-field').removeClass('invalid-field');
                 });
-                toastr.warning('There are some invalid fields.');
+                notification.showWarning();
             }
         }
 
         return {
             saveCreate: saveCreate,
             saveEdit: saveEdit
+        }
+
+    })();
+
+    var notification = (function () {
+     
+        function setSuccessMessage(message) {
+            $('#SuccessMessage').val(message || 'Successful operation.')
+        }
+
+        function setErrorMessage(message) {
+            $('#ErrorMessage').val(message || 'There was an error processing the operation.')
+        }
+
+        function showSuccess(message) {
+            $.notify({
+                title: 'Success',
+                icon: 'fa fa-check',
+                message: message || 'Successful operation.'
+            }, { type: 'success', timer: 2000 });
+        }
+
+        function showError(message) {
+            $.notify({
+                title: 'Error',
+                icon: 'fa fa-times',
+                message: message || 'There was an error processing the operation.'
+            }, { type: 'danger', timer: 2000 });
+        }
+
+        function showWarning(message) {
+            $.notify({
+                title: 'Warning',
+                icon: 'fa fa-exclamation',
+                message: message || 'There are invalid fields.'
+            }, { type: 'warning', timer: 2000 });
+        }
+
+        return {
+            showSuccess: showSuccess,
+            showError: showError,
+            showWarning: showWarning,
+            setSuccessMessage: setSuccessMessage,
+            setErrorMessage: setErrorMessage
+
         }
 
     })();
@@ -549,14 +584,14 @@ function showDetails(id, module) {
 
         function successCallbackFunction(response) {
             if (response) {
-                toastr.success(successMessage);
+                notification.showSuccess();
             } else {
-                toastr.error(errorMessage);
+                notification.showError();
             }
         }
 
         function errorCallbackFunction() {
-            toastr.error(errorMessage);
+            notification.showError();
         }
 
         function post(options, successCallback, errorCallback) {
@@ -607,7 +642,8 @@ function showDetails(id, module) {
             constructor: utils,
             form: form,
             http: http,
-            ui: ui
+            ui: ui,
+            notification: notification
         };
     })();
 
@@ -615,3 +651,63 @@ function showDetails(id, module) {
 
 
 })($, window);
+$.fn.serializeObject = function () {
+    var o = {};
+    var a = this.serializeArray();
+
+    $.each(a, function () {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = (this.type === 'checkbox') ? (this.checked ? 'true' : 'false') : this.value || '';
+        }
+    });
+
+    return o;
+};
+
+(function ($) {
+
+    $.fn.serialize = function (options) {
+        return $.param(this.serializeArray(options));
+    };
+
+    $.fn.serializeArray = function (options) {
+        var o = $.extend({
+            checkboxesAsBools: false
+        }, options || {});
+
+        var rselectTextarea = /select|textarea/i;
+        var rinput = /text|hidden|password|search/i;
+
+        return this.map(function () {
+            return this.elements ? $.makeArray(this.elements) : this;
+        })
+            .filter(function () {
+                return this.name && !this.disabled &&
+                    (this.checked
+                        || (o.checkboxesAsBools && this.type === 'checkbox')
+                        || rselectTextarea.test(this.nodeName)
+                        || rinput.test(this.type));
+            })
+            .map(function (i, elem) {
+                var val = $(this).val();
+                return val == null ?
+                    null :
+                    $.isArray(val) ?
+                        $.map(val, function (val, i) {
+                            return { name: elem.name, value: val };
+                        }) :
+                        {
+                            name: elem.name,
+                            value: (o.checkboxesAsBools && this.type === 'checkbox') ? //moar ternaries!
+                                (this.checked ? 'true' : 'false') :
+                                val
+                        };
+            }).get();
+    };
+
+})(jQuery);

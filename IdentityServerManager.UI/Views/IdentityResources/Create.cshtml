@@ -6,7 +6,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create">
+        <form asp-action="Create" id="create" class="editForm">
+
+            <input type="hidden" asp-for="Id" />
 
             @Html.Partial("_formFields", Model)
 
@@ -17,4 +19,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Views/IdentityResources/create.js"></script>
 }

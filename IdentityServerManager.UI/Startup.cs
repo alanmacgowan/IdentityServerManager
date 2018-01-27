@@ -41,6 +41,7 @@ namespace IdentityServerManager.UI
 
             services.AddMvc(options =>
             {
+                options.Filters.Add(typeof(ValidatorActionFilter));
                 options.Filters.Add(new EFExceptionFilterAttribute());
             });
         }

@@ -23,6 +23,6 @@ namespace IdentityServerManager.UI.Models
         public bool Emphasize { get; set; }
         [Display(Name = "Show In Discovery Document")]
         public bool ShowInDiscoveryDocument { get; set; } = true;
-        public List<IdentityClaim> UserClaims { get; set; }
+        //public List<IdentityClaim> UserClaims { get; set; }
     }
 }
