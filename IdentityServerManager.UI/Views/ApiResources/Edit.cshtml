@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Edit">
+        <form asp-action="Edit" id="create" class="editForm">
 
             <input type="hidden" asp-for="Id" />
 
@@ -17,4 +17,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Views/ApiResources/edit.js"></script>
 }

@@ -5,14 +5,15 @@
 }
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create">
+        <form asp-action="Create" id="create" class="editForm">
 
             @Html.Partial("_formFields", Model)
-            
+
         </form>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Views/ApiResources/create.js"></script>
 }

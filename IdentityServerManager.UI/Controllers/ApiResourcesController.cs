@@ -52,16 +52,11 @@ namespace IdentityServerManager.UI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ApiResourceViewModel apiResourceVM)
+        public async Task<IActionResult> Create([FromBody] ApiResourceViewModel apiResourceVM)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(apiResourceVM.MapTo<ApiResource>());
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { SuccessMessage = "Api Resource successfully created." });
-            }
-            return View(apiResourceVM);
+            _context.Add(apiResourceVM.MapTo<ApiResource>());
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -80,16 +75,11 @@ namespace IdentityServerManager.UI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ApiResourceViewModel apiResourceVM)
+        public async Task<IActionResult> Edit([FromBody] ApiResourceViewModel apiResourceVM)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Update(apiResourceVM.MapTo<ApiResource>());
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { SuccessMessage = "Api Resource successfully edited." });
-            }
-            return View(apiResourceVM);
+            _context.Update(apiResourceVM.MapTo<ApiResource>());
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPost, ActionName("Delete")]
