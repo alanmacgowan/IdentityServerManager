@@ -608,7 +608,7 @@ function showDetails(id, module) {
                     ui.hideSpinner();
                 })
                 .catch(function (error) {
-                    errorFunction(error.response.data.errorMessage);
+                    errorFunction(error.response.data.ErrorMessage);
                     ui.hideSpinner();
                 });
         }
