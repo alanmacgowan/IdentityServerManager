@@ -133,8 +133,8 @@
             }
         }
 
-        function errorCallbackFunction() {
-            notification.showError();
+        function errorCallbackFunction(message) {
+            notification.showError(message);
         }
 
         function post(options, successCallback, errorCallback) {
@@ -151,7 +151,7 @@
                     ui.hideSpinner();
                 })
                 .catch(function (error) {
-                    errorFunction();
+                    errorFunction(error.response.data.errorMessage);
                     ui.hideSpinner();
                 });
         }

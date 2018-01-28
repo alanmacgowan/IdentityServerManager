@@ -590,8 +590,8 @@ function showDetails(id, module) {
             }
         }
 
-        function errorCallbackFunction() {
-            notification.showError();
+        function errorCallbackFunction(message) {
+            notification.showError(message);
         }
 
         function post(options, successCallback, errorCallback) {
@@ -608,7 +608,7 @@ function showDetails(id, module) {
                     ui.hideSpinner();
                 })
                 .catch(function (error) {
-                    errorFunction();
+                    errorFunction(error.response.data.errorMessage);
                     ui.hideSpinner();
                 });
         }
