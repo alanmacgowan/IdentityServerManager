@@ -23,20 +23,6 @@ $(document).ready(function () {
 
 });
 
-function saveData(controller, action) {
-    utils.ui.showSpinner();
-    if (isDirty) {
-        $('#NextUrl').val(action);
-        $("#createForm").submit();
-    }
-    else {
-        if ($('#Id').val() != 0) {
-            location.href = '/' + controller + '/' + action + '/' + $('#Id').val();
-        }
-    }
-
-}
-
 function deleteItem(id) {
     BootstrapDialog.show({
         title: 'Delete Item',

@@ -5,12 +5,12 @@
 
     var form = (function () {
 
-        function saveEdit(controller, data) {
-            saveData(controller, data, 'Edit');
+        function saveEdit(controller, data, returnUrl) {
+            saveData(controller, data, 'Edit', returnUrl);
         }
 
-        function saveCreate(controller, data) {
-            saveData(controller, data, 'Create');
+        function saveCreate(controller, data, returnUrl) {
+            saveData(controller, data, 'Create', returnUrl);
         }
 
         function getFormData() {
@@ -20,7 +20,7 @@
             return obj;
         }
 
-        function saveData(controller, data, action) {
+        function saveData(controller, data, action, returnUrl) {
             var values = data || getFormData();
             var validator = $("form").validate();
             if (validator.form()) {
@@ -34,21 +34,20 @@
                         }
                         notification.showWarning();
                     } else {
-                        location.href = '/' + controller + '/index?SuccessMessage=Successful operation.' ;
+                        var url = returnUrl || '/' + controller + '/index';
+                        location.href = url + '?SuccessMessage=Successful operation.';
                     }
                 });
             } else {
                 validator.invalidElements().each(function (index, element) {
-                    $(element).addClass('invalid-field').removeClass('valid-field');
-                });
-                validator.validElements().each(function (index, element) {
-                   // $(element).addClass('valid-field').removeClass('invalid-field');
+                    $(element).addClass('invalid-field');
                 });
                 notification.showWarning();
             }
         }
 
         return {
+            saveData: saveData,
             saveCreate: saveCreate,
             saveEdit: saveEdit
         }

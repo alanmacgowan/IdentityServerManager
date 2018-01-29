@@ -62,7 +62,7 @@ namespace IdentityServerManager.UI.Controllers
             else
             {
                 clientVM = new ClientMainViewModel();
-            }          
+            }
             clientVM.IdentityProtocolTypes = new List<string> {
                     ProtocolTypes.OpenIdConnect,
                     ProtocolTypes.Saml2p,
@@ -72,33 +72,19 @@ namespace IdentityServerManager.UI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Main(ClientMainViewModel clientVM)
+        public async Task<IActionResult> Main([FromBody] ClientMainViewModel clientVM)
         {
-            if (ModelState.IsValid)
+            var client = clientVM.MapTo<Client>();
+            if (clientVM.Id != 0)
             {
-                var client = clientVM.MapTo<Client>();
-                if (clientVM.Id != 0)
-                {
-                    _context.Update(client);
-                }
-                else
-                {
-                    _context.Add(client);
-                }
-                await _context.SaveChangesAsync();
-
-                if (string.IsNullOrEmpty(clientVM.NextUrl))
-                {
-                    return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully created." });
-                }
-                else
-                {
-                    return RedirectToAction(clientVM.NextUrl, new { id = client.Id, SuccessMessage = "Data successfully saved." });
-                }
+                _context.Update(client);
             }
-            clientVM.NextUrl = string.Empty;
-            return View(clientVM);
+            else
+            {
+                _context.Add(client);
+            }
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
 
@@ -123,29 +109,15 @@ namespace IdentityServerManager.UI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Scopes([FromForm]ClientScopesViewModel clientVM)
+        public async Task<IActionResult> Scopes([FromBody] ClientScopesViewModel clientVM)
         {
-            if (ModelState.IsValid)
-            {
-                var scopes = JsonConvert.DeserializeObject<List<Resource>>(clientVM.AssignedResources);
-                var client = await _context.Clients.Include(c => c.AllowedScopes).SingleOrDefaultAsync(m => m.Id == clientVM.Id);
-                _context.RemoveRange(client.AllowedScopes);
-                client.AllowedScopes = scopes.Select(x => new ClientScope {Scope = x.Id, Client = client }).ToList();
-                _context.Update(client);
-                await _context.SaveChangesAsync();
-
-                if (string.IsNullOrEmpty(clientVM.NextUrl))
-                {
-                    return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully edited." });
-                }
-                else
-                {
-                    return RedirectToAction(clientVM.NextUrl, new { id = clientVM.Id, SuccessMessage = "Data successfully saved." });
-                }
-            }
-            clientVM.NextUrl = string.Empty;
-            return View(clientVM);
+            var scopes = JsonConvert.DeserializeObject<List<Resource>>(clientVM.AssignedResources);
+            var client = await _context.Clients.Include(c => c.AllowedScopes).SingleOrDefaultAsync(m => m.Id == clientVM.Id);
+            _context.RemoveRange(client.AllowedScopes);
+            client.AllowedScopes = scopes.Select(x => new ClientScope { Scope = x.Id, Client = client }).ToList();
+            _context.Update(client);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         public async Task<IActionResult> Claims(int? id, string SuccessMessage = null)
@@ -161,27 +133,13 @@ namespace IdentityServerManager.UI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Claims(ClientClaimsViewModel clientVM)
+        public async Task<IActionResult> Claims([FromBody] ClientClaimsViewModel clientVM)
         {
-            if (ModelState.IsValid)
-            {
-                var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == clientVM.Id);
-                client.Claims = clientVM.Claims;
-                _context.Update(client);
-                await _context.SaveChangesAsync();
-
-                if (string.IsNullOrEmpty(clientVM.NextUrl))
-                {
-                    return RedirectToAction(nameof(Index), new { SuccessMessage = "Client successfully edited." });
-                }
-                else
-                {
-                    return RedirectToAction(clientVM.NextUrl, new { id = clientVM.Id, SuccessMessage = "Data successfully saved." });
-                }
-            }
-            clientVM.NextUrl = string.Empty;
-            return View(clientVM);
+            var client = await _context.Clients.SingleOrDefaultAsync(m => m.Id == clientVM.Id);
+            client.Claims = clientVM.Claims;
+            _context.Update(client);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPost, ActionName("Delete")]

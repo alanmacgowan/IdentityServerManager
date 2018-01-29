@@ -12,7 +12,7 @@
             <ul class="nav nav-tabs">
                 <li role="presentation" class="active"><a href="#">Main</a></li>
                 <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Clients', 'Scopes')">Scopes</a></li>
-                <li role="presentation"><a  href="javascript:void(0)" onclick="saveData('Clients', 'Claims')">Claims</a></li>
+                <li role="presentation"><a href="javascript:void(0)" onclick="saveData('Clients', 'Claims')">Claims</a></li>
             </ul>
 
             <div class="card">
@@ -24,7 +24,8 @@
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
-                                <input asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
+                                <input type="checkbox" name="Enabled" id="Enabled" value="true" @(Model.Enabled ? "checked=\"checked\"" : "")>
+                                @Html.DisplayNameFor(model => model.Enabled)
                             </label>
                         </div>
                     </div>
@@ -39,7 +40,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="ProtocolType" class="control-label"></label>
-                                <select asp-for="ProtocolType" class="form-control border-input" asp-items="@(new SelectList(Model.IdentityProtocolTypes))"></select>
+                                <select asp-for="ProtocolType" class="form-control border-input select" asp-items="@(new SelectList(Model.IdentityProtocolTypes))"></select>
                                 <span asp-validation-for="ProtocolType" class="text-danger"></span>
                             </div>
                         </div>
@@ -57,7 +58,8 @@
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
-                                <input asp-for="RequireClientSecret" /> @Html.DisplayNameFor(model => model.RequireClientSecret)
+                                <input type="checkbox" name="RequireClientSecret" id="RequireClientSecret" value="true" @(Model.RequireClientSecret ? "checked=\"checked\"" : "")>
+                                @Html.DisplayNameFor(model => model.RequireClientSecret)
                             </label>
                         </div>
                     </div>
@@ -76,21 +78,24 @@
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="RequireConsent" /> @Html.DisplayNameFor(model => model.RequireConsent)
+                                        <input type="checkbox" name="RequireConsent" id="RequireConsent" value="true" @(Model.RequireConsent ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.RequireConsent)
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="AllowRememberConsent" /> @Html.DisplayNameFor(model => model.AllowRememberConsent)
+                                        <input type="checkbox" name="AllowRememberConsent" id="AllowRememberConsent" value="true" @(Model.AllowRememberConsent ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.AllowRememberConsent)
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="AlwaysIncludeUserClaimsInIdToken" /> @Html.DisplayNameFor(model => model.AlwaysIncludeUserClaimsInIdToken)
+                                        <input type="checkbox" name="AlwaysIncludeUserClaimsInIdToken" id="AlwaysIncludeUserClaimsInIdToken" value="true" @(Model.AlwaysIncludeUserClaimsInIdToken ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.AlwaysIncludeUserClaimsInIdToken)
                                     </label>
                                 </div>
                             </div>
@@ -99,21 +104,24 @@
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="RequirePkce" /> @Html.DisplayNameFor(model => model.RequirePkce)
+                                        <input type="checkbox" name="RequirePkce" id="RequirePkce" value="true" @(Model.RequirePkce ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.RequirePkce)
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="AllowPlainTextPkce" /> @Html.DisplayNameFor(model => model.AllowPlainTextPkce)
+                                        <input type="checkbox" name="AllowPlainTextPkce" id="AllowPlainTextPkce" value="true" @(Model.AllowPlainTextPkce ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.AllowPlainTextPkce)
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="AllowAccessTokensViaBrowser" /> @Html.DisplayNameFor(model => model.AllowAccessTokensViaBrowser)
+                                        <input type="checkbox" name="AllowAccessTokensViaBrowser" id="AllowAccessTokensViaBrowser" value="true" @(Model.AllowAccessTokensViaBrowser ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.AllowAccessTokensViaBrowser)
                                     </label>
                                 </div>
                             </div>
@@ -128,7 +136,8 @@
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
-                                <input asp-for="FrontChannelLogoutSessionRequired" /> @Html.DisplayNameFor(model => model.FrontChannelLogoutSessionRequired)
+                                <input type="checkbox" name="FrontChannelLogoutSessionRequired" id="FrontChannelLogoutSessionRequired" value="true" @(Model.FrontChannelLogoutSessionRequired ? "checked=\"checked\"" : "")>
+                                @Html.DisplayNameFor(model => model.FrontChannelLogoutSessionRequired)
                             </label>
                         </div>
                     </div>
@@ -140,7 +149,8 @@
                     <div class="form-group">
                         <div class="checkbox">
                             <label>
-                                <input asp-for="BackChannelLogoutSessionRequired" /> @Html.DisplayNameFor(model => model.BackChannelLogoutSessionRequired)
+                                <input type="checkbox" name="BackChannelLogoutSessionRequired" id="BackChannelLogoutSessionRequired" value="true" @(Model.BackChannelLogoutSessionRequired ? "checked=\"checked\"" : "")>
+                                @Html.DisplayNameFor(model => model.BackChannelLogoutSessionRequired)
                             </label>
                         </div>
                     </div>
@@ -168,7 +178,7 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="AccessTokenType" class="control-label"></label>
-                                <select asp-for="AccessTokenType" class="form-control border-input" asp-items="@(IdentityServer4.Models.AccessTokenType.Jwt.ToSelectList(Model.AccessTokenType))"></select>
+                                <select asp-for="AccessTokenType" class="form-control border-input select" asp-items="@(IdentityServer4.Models.AccessTokenType.Jwt.ToSelectList(Model.AccessTokenType))"></select>
                                 <span asp-validation-for="AccessTokenType" class="text-danger"></span>
                             </div>
                         </div>
@@ -185,12 +195,12 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="RefreshTokenUsage" class="control-label"></label>
-                                <select asp-for="RefreshTokenUsage" class="form-control border-input" asp-items="@(IdentityServer4.Models.TokenUsage.OneTimeOnly.ToSelectList(Model.RefreshTokenUsage))"></select>
+                                <select asp-for="RefreshTokenUsage" class="form-control border-input select" asp-items="@(IdentityServer4.Models.TokenUsage.OneTimeOnly.ToSelectList(Model.RefreshTokenUsage))"></select>
                                 <span asp-validation-for="RefreshTokenUsage" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="RefreshTokenExpiration" class="control-label"></label>
-                                <select asp-for="RefreshTokenExpiration" class="form-control border-input" asp-items="@(IdentityServer4.Models.TokenExpiration.Absolute.ToSelectList(Model.RefreshTokenExpiration))"></select>
+                                <select asp-for="RefreshTokenExpiration" class="form-control border-input select" asp-items="@(IdentityServer4.Models.TokenExpiration.Absolute.ToSelectList(Model.RefreshTokenExpiration))"></select>
                                 <span asp-validation-for="RefreshTokenExpiration" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -206,21 +216,24 @@
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="EnableLocalLogin" /> @Html.DisplayNameFor(model => model.EnableLocalLogin)
+                                        <input type="checkbox" name="EnableLocalLogin" id="EnableLocalLogin" value="true" @(Model.EnableLocalLogin ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.EnableLocalLogin)
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="IncludeJwtId" /> @Html.DisplayNameFor(model => model.IncludeJwtId)
+                                        <input type="checkbox" name="IncludeJwtId" id="IncludeJwtId" value="true" @(Model.IncludeJwtId ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.IncludeJwtId)
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="AlwaysSendClientClaims" /> @Html.DisplayNameFor(model => model.AlwaysSendClientClaims)
+                                        <input type="checkbox" name="AlwaysSendClientClaims" id="AlwaysSendClientClaims" value="true" @(Model.AlwaysSendClientClaims ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.AlwaysSendClientClaims)
                                     </label>
                                 </div>
                             </div>
@@ -229,14 +242,16 @@
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="AllowOfflineAccess" /> @Html.DisplayNameFor(model => model.AllowOfflineAccess)
+                                        <input type="checkbox" name="AllowOfflineAccess" id="AllowOfflineAccess" value="true" @(Model.AllowOfflineAccess ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.AllowOfflineAccess)
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="UpdateAccessTokenClaimsOnRefresh" /> @Html.DisplayNameFor(model => model.UpdateAccessTokenClaimsOnRefresh)
+                                        <input type="checkbox" name="UpdateAccessTokenClaimsOnRefresh" id="UpdateAccessTokenClaimsOnRefresh" value="true" @(Model.UpdateAccessTokenClaimsOnRefresh ? "checked=\"checked\"" : "")>
+                                        @Html.DisplayNameFor(model => model.UpdateAccessTokenClaimsOnRefresh)
                                     </label>
                                 </div>
                             </div>
@@ -252,7 +267,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group pull-right">
-                                <input type="submit" value="Save" class="btn btn-success" data-toggle="tooltip" title="Save" />
+                                <input type="button" id="save" value="Save" class="btn btn-success" data-toggle="tooltip" title="Save" />
                                 <a asp-action="Index" class="btn btn-danger" data-toggle="tooltip" title="Cancel">Cancel</a>
                             </div>
                         </div>
@@ -266,4 +281,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Views/Clients/main.js"></script>
 }

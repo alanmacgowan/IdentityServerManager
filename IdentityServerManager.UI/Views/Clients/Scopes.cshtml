@@ -55,7 +55,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group pull-right">
-                                <input type="submit" value="Save" class="btn btn-success" data-toggle="tooltip" title="Save" />
+                                <input type="button" id="save" value="Save" class="btn btn-success" data-toggle="tooltip" title="Save" />
                                 <a asp-action="Index" class="btn btn-danger" data-toggle="tooltip" title="Cancel">Cancel</a>
                             </div>
                         </div>
@@ -69,69 +69,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <script type="text/javascript">
-
-        var assignedVals = [];
-
-        $(document).ready(function () {
-
-            saveAssigned();
-
-            $('#assign').on('click', function (e) {
-                var selectedOpts = $('#AvailableScopes option:selected');
-                if (selectedOpts.length == 0) {
-                    e.preventDefault();
-                }
-                $('#AssignedScopes').append($(selectedOpts).clone());
-                $(selectedOpts).remove();
-                e.preventDefault();
-                saveAssigned();
-            });
-
-            $('#assignAll').on('click', function (e) {
-                var selectedOpts = $('#AvailableScopes option');
-                if (selectedOpts.length == 0) {
-                    e.preventDefault();
-                }
-                $('#AssignedScopes').append($(selectedOpts).clone());
-                $(selectedOpts).remove();
-                e.preventDefault();
-                saveAssigned();
-            });
-
-            $('#unassign').on('click', function (e) {
-                var selectedOpts = $('#AssignedScopes option:selected');
-                if (selectedOpts.length == 0) {
-                    e.preventDefault();
-                }
-                $('#AvailableScopes').append($(selectedOpts).clone());
-                $(selectedOpts).remove();
-                e.preventDefault();
-                saveAssigned();
-            });
-
-            $('#unassignAll').on('click', function (e) {
-                var selectedOpts = $('#AssignedScopes option');
-                if (selectedOpts.length == 0) {
-                    e.preventDefault();
-                }
-                $('#AvailableScopes').append($(selectedOpts).clone());
-                $(selectedOpts).remove();
-                e.preventDefault();
-                saveAssigned();
-            });
-
-            function saveAssigned() {
-                assignedVals = [];
-                $("#AssignedScopes option").each(function () {
-                    assignedVals.push({ Id: this.value, Name: this.value });
-                });
-                $('#AssignedResources').val(JSON.stringify(assignedVals));
-            };
-
-
-        });
-
-    </script>
+    <script src="~/js/Views/Clients/scopes.js"></script>
 }

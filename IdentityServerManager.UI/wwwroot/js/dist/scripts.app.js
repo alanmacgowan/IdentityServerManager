@@ -23,20 +23,6 @@ $(document).ready(function () {
 
 });
 
-function saveData(controller, action) {
-    utils.ui.showSpinner();
-    if (isDirty) {
-        $('#NextUrl').val(action);
-        $("#createForm").submit();
-    }
-    else {
-        if ($('#Id').val() != 0) {
-            location.href = '/' + controller + '/' + action + '/' + $('#Id').val();
-        }
-    }
-
-}
-
 function deleteItem(id) {
     BootstrapDialog.show({
         title: 'Delete Item',
@@ -462,12 +448,12 @@ function showDetails(id, module) {
 
     var form = (function () {
 
-        function saveEdit(controller, data) {
-            saveData(controller, data, 'Edit');
+        function saveEdit(controller, data, returnUrl) {
+            saveData(controller, data, 'Edit', returnUrl);
         }
 
-        function saveCreate(controller, data) {
-            saveData(controller, data, 'Create');
+        function saveCreate(controller, data, returnUrl) {
+            saveData(controller, data, 'Create', returnUrl);
         }
 
         function getFormData() {
@@ -477,7 +463,7 @@ function showDetails(id, module) {
             return obj;
         }
 
-        function saveData(controller, data, action) {
+        function saveData(controller, data, action, returnUrl) {
             var values = data || getFormData();
             var validator = $("form").validate();
             if (validator.form()) {
@@ -491,7 +477,8 @@ function showDetails(id, module) {
                         }
                         notification.showWarning();
                     } else {
-                        location.href = '/' + controller + '/index?SuccessMessage=Successful operation.' ;
+                        var url = returnUrl || '/' + controller + '/index';
+                        location.href = url + '?SuccessMessage=Successful operation.';
                     }
                 });
             } else {
@@ -506,6 +493,7 @@ function showDetails(id, module) {
         }
 
         return {
+            saveData: saveData,
             saveCreate: saveCreate,
             saveEdit: saveEdit
         }
