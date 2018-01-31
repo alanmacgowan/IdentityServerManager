@@ -5,12 +5,12 @@
 
     var form = (function () {
 
-        function saveEdit(controller, data, returnUrl) {
-            saveData(controller, data, 'Edit', returnUrl);
+        function saveEdit(controller, data, callbackUrl) {
+            saveData(controller, data, 'Edit', callbackUrl);
         }
 
-        function saveCreate(controller, data, returnUrl) {
-            saveData(controller, data, 'Create', returnUrl);
+        function saveCreate(controller, data, callbackUrl) {
+            saveData(controller, data, 'Create', callbackUrl);
         }
 
         function getFormData() {
@@ -20,12 +20,12 @@
             return obj;
         }
 
-        function saveData(controller, data, action, returnUrl) {
+        function saveData(controller, data, action, callbackUrl) {
             var values = data || getFormData();
             var validator = $("form").validate();
             if (validator.form()) {
                 utils.http.post({ url: '/' + controller + '/' + action, data: values }, function (response) {
-                    if (response.data) {
+                    if (response.data && response.data.id == undefined) {
                         for (var key in response.data) {
                             var elem = $('#' + key);
                             if (elem != null) {
@@ -34,8 +34,11 @@
                         }
                         notification.showWarning();
                     } else {
-                        var url = returnUrl || '/' + controller + '/index';
-                        location.href = url + '?SuccessMessage=Successful operation.';
+                        if (callbackUrl == undefined) {
+                            location.href = '/' + controller + '/index?SuccessMessage=Successful operation.';
+                        } else {
+                            callbackUrl(response.data.id);
+                        }
                     }
                 });
             } else {

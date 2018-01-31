@@ -84,7 +84,7 @@ namespace IdentityServerManager.UI.Controllers
                 _context.Add(client);
             }
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new { Id = client.Id});
         }
 
 

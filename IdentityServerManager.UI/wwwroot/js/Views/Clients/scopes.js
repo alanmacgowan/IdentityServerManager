@@ -1,4 +1,5 @@
 ﻿var assignedVals = [];
+var actionRedirect;
 
 $(document).ready(function () {
 
@@ -67,15 +68,21 @@ function saveData(controller, action) {
     utils.ui.showSpinner();
     var url = action != undefined ? '/' + controller + '/' + action + '/' + $('#Id').val() : '/' + controller + '/index';
     if (isDirty) {
+        actionRedirect = action == undefined ? 'index' : action;
         var data = { Id: $('#Id').val(), AssignedResources: $('#AssignedResources').val() };
-        utils.form.saveData('Clients', data, 'Scopes', url);
+        utils.form.saveData('Clients', data, 'Scopes', redirectToUrl);
     }
     else {
         if ($('#Id').val() != 0) {
+            var url = action == undefined ? '/' + controller + '/index' : '/' + controller + '/' + action + '/' + $('#Id').val();
             location.href = url;
         } else {
             $("form").validate();
             utils.ui.hideSpinner();
         }
     }
+}
+
+function redirectToUrl(id) {
+    location.href = '/Clients/' + actionRedirect + '/' + $('#Id').val() + '?SuccessMessage=Successful operation.';
 }
