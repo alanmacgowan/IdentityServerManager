@@ -59,6 +59,7 @@ $(document).ready(function () {
             assignedVals.push({ Id: this.value, Name: this.value });
         });
         $('#AssignedResources').val(JSON.stringify(assignedVals));
+        isDirty = true;
     };
 
 
