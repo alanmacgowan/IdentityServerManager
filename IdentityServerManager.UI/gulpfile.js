@@ -20,6 +20,8 @@ var cssSourceFiles = [
     cssPath + '/themify-icons.css',
     nodeModulesPath + '/bootstrap-dialog/dist/css/bootstrap-dialog.min.css',
     nodeModulesPath + '/select2/dist/css/select2.min.css',
+    nodeModulesPath + '/datatables.net-bs/css/dataTables.bootstrap.css',
+    nodeModulesPath + '/datatables.net-responsive-bs/css/responsive.bootstrap.css',
     cssPath + '/site.css',
 ];
 var jsVendorSourceFiles = [
@@ -28,6 +30,9 @@ var jsVendorSourceFiles = [
     jsPath + '/bootstrap-checkbox-radio.js',
     jsPath + '/bootstrap-notify.js',
     jsPath + '/paper-dashboard.js',
+    nodeModulesPath + '/datatables.net/js/jquery.dataTables.js',
+    nodeModulesPath + '/datatables.net-bs/js/dataTables.bootstrap.js',
+    nodeModulesPath + '/datatables.net-responsive/js/dataTables.responsive.js',
     nodeModulesPath + '/bootstrap-dialog/dist/js/bootstrap-dialog.min.js',
     nodeModulesPath + '/moment/moment.js',
     nodeModulesPath + '/select2/dist/js/select2.js',
